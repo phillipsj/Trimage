@@ -37,14 +37,20 @@
         },
         {
             "name": "pngcrush",
-            "buildsystem": "cmake",
-            "builddir": true,
-            "subdir" : "pngcrush-1.8.13",
+            "buildsystem" : "simple",
             "sources":[{
                 "type": "archive",
                 "url": "https://netcologne.dl.sourceforge.net/project/pmt/pngcrush/1.8.13/pngcrush-1.8.13.tar.gz",
                 "sha256":"bac37d4b2be88d7e88aadcde9661beb3a513a90e7d26784f906c1e2da8ba332e"
-            }]
+            }],
+            "build-options": {
+              "build-args": [
+                "--share=network"
+              ]
+            },
+            "build-commands" : [
+              "make -f Makefile"
+            ]
         },
         {
           "name": "advpng",
