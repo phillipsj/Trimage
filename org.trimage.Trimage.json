@@ -8,12 +8,15 @@
     "--share=ipc",
     "--socket=x11",
     "--socket=wayland",
-    "--filesystem=xdg-run/dconf",
+    "--socket=pulseaudio",
+    "--talk-name=org.freedesktop.Notifications",
+    "--talk-name=org.freedesktop.Flatpak",
+    "--device=dri",
     "--filesystem=~/.config/dconf:ro",
-    "--talk-name=ca.desrt.dconf",
-    "--env=DCONF_USER_CONFIG_DIR=.config/dconf",
-    "--filesystem=home",
-    "--command=/app/bin/trimage"
+        "--filesystem=xdg-download",
+        "--filesystem=xdg-pictures",
+        "--filesystem=xdg-run/dconf",
+    "--command=runner.sh"
   ],
   "modules": [
     {
@@ -22,7 +25,7 @@
           {
               "type": "archive",
               "url": "https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tar.xz",
-              "md5": "68111671e5b2db4aef7b9ab01bf0f9be"
+              "md5": "d33e4aae66097051c2eca45ee3604803"
           }
       ]
   },
@@ -61,13 +64,9 @@
           "sha256": "bac37d4b2be88d7e88aadcde9661beb3a513a90e7d26784f906c1e2da8ba332e"
         }
       ],
-      "build-options": {
-        "build-args": [
-          "--share=network"
-        ]
-      },
       "build-commands": [
-        "make -f Makefile"
+        "make -f Makefile",
+        "install -D pngcrush /app/bin/pngcrush"
       ]
     },
     {
@@ -79,26 +78,7 @@
           "sha256": "3ac0875e86a8517011976f04107186d5c60d434954078bc502ee731480933eb8"
         }
       ]
-    },
-    {
-      "name": "PyQt5",
-      "buildsystem": "simple",
-      "build-options": {
-        "build-args": [
-          "--share=network"
-        ]
-      },
-      "build-commands": [
-        "pip3 install --prefix=/app PyQt5-5.12.1-5.12.2-cp35.cp36.cp37.cp38-abi3-manylinux1_x86_64.whl"
-      ],
-      "sources": [
-        {
-          "type": "file",
-          "url": "https://files.pythonhosted.org/packages/98/61/fcd53201a23dd94a1264c29095821fdd55c58b4cd388dc7115e5288866db/PyQt5-5.12.1-5.12.2-cp35.cp36.cp37.cp38-abi3-manylinux1_x86_64.whl",
-          "sha256": "d4e88208dfd017636e4b1f407990d0c3b6cf47afed6be4f2fb6ca887ef513e4b"
-        }
-      ]
-    },
+    },    
     {
       "name": "pip-install",
       "buildsystem": "simple",
@@ -112,25 +92,25 @@
           "pip3 install setuptools --upgrade"
       ]
   },
-    {
-      "name": "SetupTools",
-      "buildsystem": "simple",
-      "build-options": {
-        "build-args": [
-          "--share=network"
-        ]
-      },
-      "build-commands": [
-        "pip3 install setuptools-41.2.0-py2.py3-none-any.whl"
-      ],
-      "sources": [
-        {
-          "type": "file",
-          "url": "https://files.pythonhosted.org/packages/b2/86/095d2f7829badc207c893dd4ac767e871f6cd547145df797ea26baea4e2e/setuptools-41.2.0-py2.py3-none-any.whl",
-          "sha256": "4380abcf2a4ffd1a5ba22d687c6d690dce83b2b51c70e9c6d09f7e8c7e8040dc"
-        }
+  {
+    "name": "PyQt5",
+    "buildsystem": "simple",
+    "build-options": {
+      "build-args": [
+        "--share=network"
       ]
     },
+    "build-commands": [
+      "pip3 install PyQt5-5.12.1-5.12.2-cp35.cp36.cp37.cp38-abi3-manylinux1_x86_64.whl"
+    ],
+    "sources": [
+      {
+        "type": "file",
+        "url": "https://files.pythonhosted.org/packages/98/61/fcd53201a23dd94a1264c29095821fdd55c58b4cd388dc7115e5288866db/PyQt5-5.12.1-5.12.2-cp35.cp36.cp37.cp38-abi3-manylinux1_x86_64.whl",
+        "sha256": "d4e88208dfd017636e4b1f407990d0c3b6cf47afed6be4f2fb6ca887ef513e4b"
+      }
+    ]
+  },
     {
       "name": "trimage",
       "buildsystem": "simple",
@@ -143,7 +123,7 @@
         "mkdir /app/share/applications",
         "cp trimage.desktop /app/share/applications/org.trimage.Trimage.desktop",
         "cp trimage.svg /app/share/applications",
-        "install -D runner.sh /app/bin/runner.sh ",
+        "install -D runner.sh /app/bin/runner.sh",
         "install -D setup.py /app/package/setup.py",
         "cp -r trimage/ /app/package/trimage",
         "pip3 install /app/package"
